@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProyectoWebApplication {
+public class ProyectoApi {
 	public static void main(String[] args) {
-		SpringApplication.run(ProyectoWebApplication.class, args);
+		SpringApplication.run(ProyectoApi.class, args);
 	}
 }
