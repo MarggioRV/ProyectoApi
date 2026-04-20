@@ -6,5 +6,4 @@ import com.example.ProyectoWeb.Models.Movies;
 
 @Repository
 public interface MoviesRepository extends JpaRepository<Movies, Long> {
-    
 }
