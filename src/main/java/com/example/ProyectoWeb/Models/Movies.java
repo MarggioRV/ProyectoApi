@@ -3,11 +3,14 @@ package com.example.ProyectoWeb.Models;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Movies {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // = Auto_Increment
     private long id;
     private String titulo;
     private String director;
@@ -16,7 +19,7 @@ public class Movies {
     private String formato;
     private String idioma;
     private String imagen;
-    private String Clasificacion;
+    private String clasificacion;
     private LocalDate fechaEstreno;
     private LocalDate fechaFinCartelera;
 
@@ -24,7 +27,7 @@ public class Movies {
     }
 
     public Movies(long id, String titulo, String director, String sinopsis, String genero, String formato,
-            String idioma, String imagen, String Clasificacion, LocalDate fechaEstreno, LocalDate fechaFinCartelera) {
+            String idioma, String imagen, String clasificacion, LocalDate fechaEstreno, LocalDate fechaFinCartelera) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
@@ -33,7 +36,7 @@ public class Movies {
         this.formato = formato;
         this.idioma = idioma;
         this.imagen = imagen;
-        this.Clasificacion = Clasificacion;
+        this.clasificacion = clasificacion;
         this.fechaEstreno = fechaEstreno;
         this.fechaFinCartelera = fechaFinCartelera;
     }
@@ -102,6 +105,14 @@ public class Movies {
         this.imagen = imagen;
     }
 
+    public String getClasificacion() {
+        return clasificacion;
+    }
+
+    public void setClasificacion(String clasificacion) {
+        this.clasificacion = clasificacion;
+    }
+
     public LocalDate getFechaEstreno() {
         return fechaEstreno;
     }
@@ -118,11 +129,4 @@ public class Movies {
         this.fechaFinCartelera = fechaFinCartelera;
     }
 
-    public String getClasificacion() {
-        return Clasificacion;
-    }
-
-    public void setClasificacion(String clasificacion) {
-        Clasificacion = clasificacion;
-    }
 }
