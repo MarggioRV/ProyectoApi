@@ -11,23 +11,24 @@ import jakarta.persistence.Id;
 public class Movies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // = Auto_Increment
-    private long id;
-    private String titulo;
-    private String director;
-    private String sinopsis;
-    private String genero;
-    private String formato;
-    private String idioma;
-    private String imagen;
-    private String clasificacion;
-    private LocalDate fechaEstreno;
-    private LocalDate fechaFinCartelera;
+    private long id; //Oblig
+    private String titulo; //Oblig
+    private String director; //Oblig
+    private String sinopsis; 
+    private String genero; //Oblig
+    private String formato; //Oblig
+    private String idioma; //Oblig
+    private String imagen; 
+    private String clasificacion; //Oblig
+    private LocalDate fechaEstreno; //Oblig
+    private LocalDate fechaFinCartelera; //Oblig
+    private int duracion; //Oblig
 
     public Movies() {
     }
 
     public Movies(long id, String titulo, String director, String sinopsis, String genero, String formato,
-            String idioma, String imagen, String clasificacion, LocalDate fechaEstreno, LocalDate fechaFinCartelera) {
+            String idioma, String imagen, String clasificacion, LocalDate fechaEstreno, LocalDate fechaFinCartelera, int duracion) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
@@ -39,6 +40,7 @@ public class Movies {
         this.clasificacion = clasificacion;
         this.fechaEstreno = fechaEstreno;
         this.fechaFinCartelera = fechaFinCartelera;
+        this.duracion = duracion;
     }
 
     public long getId() {
@@ -127,6 +129,14 @@ public class Movies {
 
     public void setFechaFinCartelera(LocalDate fechaFinCartelera) {
         this.fechaFinCartelera = fechaFinCartelera;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
 
 }
