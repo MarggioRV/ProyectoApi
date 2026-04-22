@@ -21,25 +21,58 @@ public class ApiService {
 
     // CREATE
     public Movies crear(Movies movie) {
+        camposBasicos(movie);
+        movie.setImagen(checkImagen(movie.getImagen()));
+
         return repository.save(movie); // JPA asigna ID automáticamente
     }
 
     // READ - obtener todos
     public List<Movies> listar() {
-        return repository.findAll();
+        List<Movies> lista = repository.findAll();
+
+        // LLamada para corregir imgs
+        lista.forEach(m -> m.setImagen(checkImagen(m.getImagen())));
+
+        return lista;
     }
 
     // READ - obtener por id
     public Movies buscarPorId(long id) {
-        return repository.findById(id).orElse(null);
+
+        validarID(id);
+
+        Movies movie = repository.findById(id).orElse(null);
+
+        // Llamada y disyuncion para corregir
+        if (movie != null) {
+            movie.setImagen(checkImagen(movie.getImagen()));
+        }
+
+        return movie;
     }
+
+    // public Movies buscarPorId(long id) {
+    // return repository.findById(id).orElse(null);
+    // }
 
     // UPDATE
     public Movies actualizar(long id, Movies movieActualizado) {
+
+        validarID(id);
+
+        // Buscar pelicula existente
         Movies existente = repository.findById(id).orElse(null);
 
         if (existente != null) {
 
+            // Llamada a validacion de campos basicos
+            camposBasicos(movieActualizado);
+
+            // Llamada a validacion de imagen
+            movieActualizado.setImagen(checkImagen(movieActualizado.getImagen()));
+
+            // Pasando datos validos
             existente.setTitulo(movieActualizado.getTitulo());
             existente.setDirector(movieActualizado.getDirector());
             existente.setSinopsis(movieActualizado.getSinopsis());
@@ -57,7 +90,11 @@ public class ApiService {
 
     // DELETE
     public String eliminar(long id) {
+
+        validarID(id);
+
         Movies existente = repository.findById(id).orElse(null);
+
         if (existente != null) {
             repository.deleteById(id);
             return "Movie " + id + " eliminada";
@@ -66,10 +103,10 @@ public class ApiService {
         return "Movie " + id + " no encontrada";
     }
 
-    // === VALIDACIONES ===\\
+    // === VALIDACIONES (Private) ===\\
 
     // VALIDACION_CAMPOS+
-    public void camposBasicos(Movies movie) {
+    private void camposBasicos(Movies movie) {
         if (movie == null) {
             throw new IllegalArgumentException("La cinta debe existir");
         }
@@ -97,38 +134,37 @@ public class ApiService {
     // FUNCIONES AUX: Validacion_CamposB
 
     // En caso de vacio
-    public void checkTexto(String valor, String mensaje) {
+    private void checkTexto(String valor, String mensaje) {
         if (valor == null || valor.isBlank()) {
             throw new IllegalArgumentException(mensaje);
         }
     }
 
     // En caso de numero negativo o cero
-    public void checkPositivo(int valor, String mensaje) {
+    private void checkPositivo(int valor, String mensaje) {
         if (valor <= 0) {
             throw new IllegalArgumentException(mensaje);
         }
     }
 
-    public void fechaNotNULL(Object valor, String mensaje) {
+    private void fechaNotNULL(Object valor, String mensaje) {
         if (valor == null) {
             throw new IllegalArgumentException(mensaje);
         }
     }
 
     // VALIDACION_ID
-    public String validarID(long id) {
+    private void validarID(long id) {
         if (id <= 0) {
-            return "ID no valido";
+            throw new IllegalArgumentException("ID no válido");
         }
-        return null;
     }
 
     // CONSTANTE DEFAULT
     final String DEFAULT_IMG = "/Images/Movie-Icon.png";
 
     // VALIDACION_IMAGEN
-    public String checkImagen(String url) {
+    private String checkImagen(String url) {
         if (url == null || url.isBlank()) {
             return DEFAULT_IMG;
         }
@@ -151,7 +187,7 @@ public class ApiService {
     // FUNCIONES AUX: Validacion_Imagen
 
     // Checkeo de la url
-    public String urlValido(String url) {
+    private String urlValido(String url) {
         try {
             URLConnection conn = URI.create(url).toURL().openConnection();
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -191,7 +227,7 @@ public class ApiService {
     private boolean extensionValida(String url) {
         String lower = url.toLowerCase();
         return lower.endsWith(".png")
-            || lower.endsWith(".jpg")
-            || lower.endsWith(".jpeg");
+                || lower.endsWith(".jpg")
+                || lower.endsWith(".jpeg");
     }
 }
