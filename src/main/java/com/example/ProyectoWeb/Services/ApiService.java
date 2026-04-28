@@ -9,8 +9,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import com.example.ProyectoWeb.Repository.MoviesRepository;
 import com.example.ProyectoWeb.Models.Movies;
 
@@ -21,14 +23,29 @@ public class ApiService {
 
     // CREATE
     public Movies crear(Movies movie) {
+
+        // LLamada a validacion
         camposBasicos(movie);
+
+        // Valores por defecto
+        movie.setClasificacion(defaultCla(movie.getClasificacion()));
+        movie.setGenero(defaultGe(movie.getGenero()));
+        movie.setIdioma(defaultIdioma(movie.getIdioma()));
+        movie.setFormato(defaultFor(movie.getFormato()));
+        movie.setSinopsis(defaultSinop(movie.getSinopsis()));
+        movie.setDistribuidora(defaultDis(movie.getDistribuidora()));
+
+        // LLamada a validacion_imagen
         movie.setImagen(checkImagen(movie.getImagen()));
 
+        // Save en la BD
         return repository.save(movie); // JPA asigna ID automáticamente
     }
 
     // READ - obtener todos
     public List<Movies> listar() {
+
+        // Se obtiene una l de todas las cintas de la BD
         List<Movies> lista = repository.findAll();
 
         // LLamada para corregir imgs
@@ -40,8 +57,10 @@ public class ApiService {
     // READ - obtener por id
     public Movies buscarPorId(long id) {
 
+        // Llamada para validar ID
         validarID(id);
 
+        // Buscar pelicula en BD
         Movies movie = repository.findById(id).orElse(null);
 
         // Llamada y disyuncion para corregir
@@ -93,15 +112,40 @@ public class ApiService {
 
         validarID(id);
 
+        // Buscar pelicula existente
         Movies existente = repository.findById(id).orElse(null);
 
+        // Si existe, eliminar y retornar mensaje
         if (existente != null) {
             repository.deleteById(id);
             return "Movie " + id + " eliminada";
 
         }
+        // Si no existe, retornar mensaje de no encontrado
         return "Movie " + id + " no encontrada";
     }
+
+    // === BUSCADORES ESPECIALES ===\\
+
+    // Bscar por título
+    public List<Movies> buscarXTitulo(String titulo) {
+
+        // Obtener todas las películas de la BD
+        List<Movies> todas = repository.findAll();
+
+        // Filtrar por título (case-insensitive, contains)
+        return todas.stream()
+                .filter(m -> m.getTitulo()
+                        .toLowerCase()
+                        .contains(titulo.toLowerCase()))
+                .toList();
+    }
+
+    // === Pag ===\\
+    // public Page<Movies> listarPaginado(int page, int size) {
+    //     // Delega al repositorio con paginación ordenada por ID
+    //     return repository.findAll(PageRequest.of(page, size, Sort.by("id")));
+    // }
 
     // === VALIDACIONES (Private) ===\\
 
@@ -147,6 +191,7 @@ public class ApiService {
         }
     }
 
+    // En caso de fecha vacia (Db a Date)
     private void fechaNotNULL(Object valor, String mensaje) {
         if (valor == null) {
             throw new IllegalArgumentException(mensaje);
@@ -229,5 +274,37 @@ public class ApiService {
         return lower.endsWith(".png")
                 || lower.endsWith(".jpg")
                 || lower.endsWith(".jpeg");
+    }
+
+    // === OTROS DEFAULTS ===\\
+
+    // Clasificación
+    private String defaultCla(String valor) {
+        return (valor == null || valor.isBlank()) ? "Sin clasificar" : valor;
+    }
+
+    // Género
+    private String defaultGe(String valor) {
+        return (valor == null || valor.isBlank()) ? "Desconocido" : valor;
+    }
+
+    // Idioma
+    private String defaultIdioma(String valor) {
+        return (valor == null || valor.isBlank()) ? "N/A" : valor;
+    }
+
+    // Formato por defecto
+    private String defaultFor(String valor) {
+        return (valor == null || valor.isBlank()) ? "N/A" : valor;
+    }
+
+    // Sinopsis
+    private String defaultSinop(String valor) {
+        return (valor == null || valor.isBlank()) ? "Descripción no disponible" : valor;
+    }
+
+    // Distribuidora
+    private String defaultDis(String valor) {
+        return (valor == null || valor.isBlank()) ? "Dominio Publico" : valor;
     }
 }

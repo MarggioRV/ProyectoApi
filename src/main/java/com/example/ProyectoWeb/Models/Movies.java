@@ -22,13 +22,15 @@ public class Movies {
     private String clasificacion; //Oblig
     private LocalDate fechaEstreno; //Oblig
     private LocalDate fechaFinCartelera; //Oblig
-    private int duracion; //Oblig
+    private int duracion; //Oblig, minutos
+    private String distribuidora; //Oblig
 
     public Movies() {
     }
 
     public Movies(long id, String titulo, String director, String sinopsis, String genero, String formato,
-            String idioma, String imagen, String clasificacion, LocalDate fechaEstreno, LocalDate fechaFinCartelera, int duracion) {
+            String idioma, String imagen, String clasificacion, LocalDate fechaEstreno, LocalDate fechaFinCartelera,
+            int duracion, String distribuidora) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
@@ -41,7 +43,10 @@ public class Movies {
         this.fechaEstreno = fechaEstreno;
         this.fechaFinCartelera = fechaFinCartelera;
         this.duracion = duracion;
+        this.distribuidora = distribuidora;
     }
+
+
 
     public long getId() {
         return id;
@@ -139,4 +144,11 @@ public class Movies {
         this.duracion = duracion;
     }
 
+    public String getDistribuidora() {
+        return distribuidora;
+    }
+
+    public void setDistribuidora(String distribuidora) {
+        this.distribuidora = distribuidora;
+    }
 }
