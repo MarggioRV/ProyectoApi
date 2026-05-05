@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import com.example.ProyectoWeb.Models.Movies;
 import com.example.ProyectoWeb.Services.ApiService;
-import com.example.ProyectoWeb.Repository.MoviesRepository;
 
 @RestController()
 @RequestMapping("/movies") // Todas las rutas empiezan asi
@@ -112,16 +107,4 @@ public class apiController {
     public List<Movies> buscarXTitulo(@RequestParam String titulo) {
         return service.buscarXTitulo(titulo); // Delega al servicio
     }
-
-    // Endpoint de paginación
-    // @GetMapping("/page")
-    // public Page<Movies> getMoviesPaginadas(
-    //         // Página actual (empieza en 0)
-    //         @RequestParam(defaultValue = "0") int page,
-    //         // Tamaño de página (12 por defecto)
-    //         @RequestParam(defaultValue = "12") int size) {
-
-    //     // Delega al servicio con paginación ordenada por ID
-    //     return service.listarPaginado(page, size);
-    // }
 }

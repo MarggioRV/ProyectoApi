@@ -9,9 +9,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.example.ProyectoWeb.Repository.MoviesRepository;
 import com.example.ProyectoWeb.Models.Movies;
@@ -141,12 +138,6 @@ public class ApiService {
                 .toList();
     }
 
-    // === Pag ===\\
-    // public Page<Movies> listarPaginado(int page, int size) {
-    //     // Delega al repositorio con paginación ordenada por ID
-    //     return repository.findAll(PageRequest.of(page, size, Sort.by("id")));
-    // }
-
     // === VALIDACIONES (Private) ===\\
 
     // VALIDACION_CAMPOS+
@@ -206,7 +197,7 @@ public class ApiService {
     }
 
     // CONSTANTE DEFAULT
-    final String DEFAULT_IMG = "/Images/Movie-Icon.png";
+    final String DEFAULT_IMG = "/Images/Movie-Icon.jpg";
 
     // VALIDACION_IMAGEN
     private String checkImagen(String url) {

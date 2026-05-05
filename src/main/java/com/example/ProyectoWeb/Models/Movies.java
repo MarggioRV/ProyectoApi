@@ -11,19 +11,19 @@ import jakarta.persistence.Id;
 public class Movies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // = Auto_Increment
-    private long id; //Oblig
-    private String titulo; //Oblig
-    private String director; //Oblig
+    private long id; 
+    private String titulo; 
+    private String director; 
     private String sinopsis; 
-    private String genero; //Oblig
-    private String formato; //Oblig
-    private String idioma; //Oblig
+    private String genero; 
+    private String formato; 
+    private String idioma; 
     private String imagen; 
-    private String clasificacion; //Oblig
-    private LocalDate fechaEstreno; //Oblig
-    private LocalDate fechaFinCartelera; //Oblig
-    private int duracion; //Oblig, minutos
-    private String distribuidora; //Oblig
+    private String clasificacion; 
+    private LocalDate fechaEstreno; 
+    private LocalDate fechaFinCartelera; 
+    private int duracion; 
+    private String distribuidora; 
 
     public Movies() {
     }
